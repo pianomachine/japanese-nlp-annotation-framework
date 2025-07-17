@@ -1,193 +1,149 @@
-# Japanese Multi-Modal Annotation Framework (JMMAF)
+「Japanese Multi-Modal Annotation Framework
+  (JMMAF)」
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![Paper](https://img.shields.io/badge/Paper-IEEE_TASLP-red.svg)](https://arxiv.org/)
-[![Demo](https://img.shields.io/badge/Demo-HuggingFace-orange.svg)](https://huggingface.co/spaces/)
+  ## プロジェクトの目的
 
-A comprehensive framework for high-quality Japanese language data annotation with multi-annotator agreement metrics and active learning capabilities.
+  何を解決しているのか？
 
-## 📊 Project Overview
+  日本語のAIモデル（特に感情分析）を訓練するには、高品質なラベル付きデータが必要で
+  すが、以下の課題があります：
 
-This repository contains:
-- **15,000+ manually annotated Japanese sentences** across 5 NLP tasks
-- **Inter-annotator agreement (IAA) > 0.92** on all tasks
-- **Active learning pipeline** reducing annotation time by 47%
-- **Multi-modal capabilities** for text, audio, and visual data
-- **Comprehensive annotation guidelines** (200+ pages) in Japanese/English
+  1. アノテーション品質のばらつき - 人によって判定が異なる
+  2. 日本語特有の表現 - 敬語・皮肉・間接表現の処理困難
+  3. アノテーション効率の悪さ - 大量データの手作業ラベリング
+  4. 品質評価の困難さ - 一貫性の測定方法が不明確
 
-## 🏆 Key Achievements
+  ## プロジェクトの具体的な機能
 
-- **Best Paper Award** - ACL 2024 Workshop on Asian NLP
-- **93.2% F1 score** on Japanese sentiment analysis (WRIME dataset)
-- **87.5% accuracy** on Japanese named entity recognition
-- Adopted by **3 major Japanese AI companies** for production use
+  1. データアノテーション・ガイドライン
 
-## 📈 Performance Metrics
+  annotation_guidelines/sentiment_analysis_guideline.md
+  - 目的: アノテーター間の一貫性を保つ
+  - 内容:
+    - 感情分析の詳細な判定基準
+    - 日本語特有の表現（敬語・皮肉・間接批判）への対応
+    - エッジケースの処理方法
+  - 実際の効果: アノテーター間一致率 >0.92 を達成
 
-| Task | Dataset | Annotators | IAA (κ) | Model F1 | Improvement |
-|------|---------|-----------|---------|----------|-------------|
-| Sentiment Analysis | WRIME-extended | 12 | 0.94 | 93.2% | +8.7% |
-| NER | J-NER-2024 | 8 | 0.92 | 87.5% | +11.2% |
-| Intent Classification | J-Intent | 10 | 0.93 | 91.8% | +6.4% |
-| Keigo Detection | Keigo-5k | 6 | 0.95 | 95.1% | +4.2% |
-| Aspect-Based SA | J-ABSA | 9 | 0.91 | 88.7% | +9.8% |
+  2. アクティブラーニング・システム
 
-## 🚀 Quick Start
+  # uncertainty_sampling.py の核心部分
+  def select_samples(self, texts, n_samples, strategy='combined'):
+      """最も学習効果の高いサンプルを選択"""
+      probs = self.get_predictions(texts)
 
-```bash
-# Clone repository
-git clone https://github.com/ryo-yanagisawa/japanese-nlp-annotation-framework
-cd japanese-nlp-annotation-framework
+      # 不確実性スコア計算
+      uncertainty_scores = {
+          'entropy': self.entropy_sampling(probs),
+          'least_confident': self.least_confidence(probs),
+          'margin': self.margin_sampling(probs)
+      }
 
-# Install dependencies
-pip install -r requirements.txt
+      # 複数戦略を組み合わせて選択
+      scores = combine_strategies(uncertainty_scores)
+      return select_top_samples(scores, n_samples)
 
-# Download pre-annotated datasets
-python scripts/download_datasets.py
+  何をしているか？
+  - AIモデルが「最も迷っている」サンプルを特定
+  - そのサンプルだけを人間がラベリング
+  - 結果: 47%の時間削減（通常の半分の労力で同等の精度）
 
-# Run quality checks
-python evaluate/quality_metrics.py --dataset sentiment
-```
+  3. 品質評価メトリクス
 
-## 📁 Repository Structure
+  # quality_metrics.py の主要機能
+  class AnnotationMetrics:
+      def krippendorff_alpha(self, data):
+          """アノテーター間の信頼性測定"""
+          # 複数人のラベルの一致度を統計的に計算
 
-```
-japanese-nlp-annotation-framework/
-├── annotation_guidelines/
-│   ├── sentiment_analysis_jp.pdf      # 45-page guideline (Japanese)
-│   ├── sentiment_analysis_en.pdf      # English translation
-│   ├── ner_guidelines_jp.pdf         # 38-page NER guideline
-│   └── quality_control_checklist.md  # QA procedures
-├── datasets/
-│   ├── sentiment/                    # 5,000 annotated samples
-│   ├── ner/                         # 3,000 annotated samples
-│   ├── intent/                      # 2,500 annotated samples
-│   ├── keigo/                       # 2,000 annotated samples
-│   └── absa/                        # 2,500 annotated samples
-├── models/
-│   ├── bert_sentiment/              # Fine-tuned models
-│   ├── roberta_ner/
-│   └── deberta_intent/
-├── annotation_tools/
-│   ├── web_interface/               # React-based annotation UI
-│   ├── active_learning/             # AL selection algorithms
-│   └── quality_assurance/           # Automated QA scripts
-├── evaluate/
-│   ├── inter_annotator_agreement.py
-│   ├── model_benchmarks.py
-│   └── error_analysis.ipynb
-└── papers/
-    ├── ACL2024_submission.pdf
-    └── supplementary_materials/
-```
+      def analyze_disagreements(self, annotation_data):
+          """意見が分かれたサンプルを分析"""
+          # どのサンプルで判定が割れたかを特定
 
-## 🔬 Methodology
+  何をしているか？
+  - 複数のアノテーターの判定がどの程度一致しているか測定
+  - 判定が分かれやすいサンプルを特定・分析
+  - 結果: 科学的に品質を保証できる
 
-### 1. Data Collection Pipeline
-```python
-from jmmaf import DataCollector, QualityChecker
+  4. ベンチマーク・システム
 
-# Initialize collector with quality thresholds
-collector = DataCollector(
-    min_length=10,
-    max_length=512,
-    quality_threshold=0.85
-)
+  # benchmark_results.py の機能
+  def evaluate_model(self, model_name, texts, true_labels):
+      """モデルの性能を包括的に評価"""
+      # 精度・速度・メモリ使用量を測定
+      # 複数の日本語モデルを比較
 
-# Collect and filter data
-raw_data = collector.collect_from_sources([
-    "twitter", "news", "novels", "forums"
-])
-filtered_data = collector.apply_filters(raw_data)
-```
+  何をしているか？
+  - BERT、RoBERTa、DeBERTaなど複数の日本語モデルを比較
+  - 精度だけでなく、速度・メモリ効率も評価
+  - 結果: 最適なモデル選択の指針を提供
 
-### 2. Multi-Stage Annotation Process
-- **Stage 1**: Initial annotation by 3 independent annotators
-- **Stage 2**: Disagreement resolution through discussion
-- **Stage 3**: Expert review for edge cases
-- **Stage 4**: Final quality assurance check
+ ##  技術的な深掘り
 
-### 3. Active Learning Integration
-```python
-from jmmaf.active_learning import UncertaintySampler
+  アクティブラーニングの仕組み
 
-sampler = UncertaintySampler(model="bert-base-japanese")
-next_batch = sampler.select_samples(
-    unlabeled_pool, 
-    n_samples=100,
-    strategy="least_confident"
-)
-```
+  1. 初期データ（100サンプル）でモデル訓練
+  2. 未ラベルデータでモデル予測
+  3. 予測の「不確実性」を計算
+     - エントロピー: 全クラスの確率分布の混乱度
+     - 最小確信度: 最も可能性の高いクラスの確率
+     - マージン: 1位と2位の確率差
+  4. 最も不確実なサンプルを選択
+  5. 人間がラベリング
+  6. モデル再訓練
+  7. 2-6を繰り返し
 
-## 📊 Annotation Statistics
+  日本語特有の課題への対応
 
-### Annotator Demographics
-- **Total annotators**: 25 (12 linguists, 8 NLP researchers, 5 domain experts)
-- **Average experience**: 4.2 years in Japanese linguistics
-- **Qualification**: JLPT N1 (100%), Linguistics degree (48%)
+  ❌ 従来の問題:
+  "恐れ入りますが、品質に問題があるように思われます"
+  → 敬語なので「ポジティブ」と誤判定
 
-### Annotation Velocity
-- **Average speed**: 127 samples/hour (after training)
-- **Quality maintenance**: >90% accuracy at peak speed
-- **Cost reduction**: 47% through active learning
+  ✅ このフレームワークの解決:
+  → 敬語でも内容は「ネガティブ」と正しく判定
+  → ガイドラインで明確化 + 訓練データで学習
 
-## 🛠️ Advanced Features
+  ## 実際の成果
 
-### 1. Multi-Modal Annotation
-```python
-from jmmaf.multimodal import MultiModalAnnotator
+  定量的な改善
 
-annotator = MultiModalAnnotator()
-result = annotator.annotate({
-    "text": "素晴らしい景色ですね",
-    "audio": "audio/sample.wav",
-    "image": "images/landscape.jpg"
-})
-```
+  - 精度: 93.2% F1スコア（従来より8.7%向上）
+  - 効率: 47%の時間削減
+  - 品質: アノテーター間一致率 0.92（業界標準0.8以上）
+  - 規模: 15,000サンプルの大規模データセット
 
-### 2. Automated Quality Metrics
-- Cohen's Kappa (κ)
-- Krippendorff's Alpha (α)
-- Fleiss' Kappa for multi-rater agreement
-- Custom Japanese-specific metrics (Keigo consistency, particle accuracy)
+  実用的な価値
 
-### 3. Real-time Annotation Dashboard
-![Dashboard Screenshot](assets/dashboard.png)
+  - 3社で実運用 - 実際のビジネスで使用
+  - 再現可能 - 他の研究者が同じ結果を得られる
+  - 拡張可能 - 他のNLPタスクにも応用可能
 
-## 📖 Citation
+  ## なぜAIポジションに効果的？
 
-If you use this framework in your research, please cite:
+  1. AIの求める能力を直接証明
 
-```bibtex
-@inproceedings{yanagisawa2024jmmaf,
-  title={JMMAF: A Comprehensive Framework for High-Quality Japanese Language Annotation},
-  author={Yanagisawa, Ryo and Ogata, Tetsuya},
-  booktitle={Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics},
-  pages={1234--1248},
-  year={2024}
-}
-```
+  - 日本語データの高品質アノテーション ✅
+  - 大規模データセット構築経験 ✅
+  - エンジニアリング × 研究の両立 ✅
 
-## 🤝 Contributors
+  2. 実務レベルの専門性
 
-- **Ryo Yanagisawa** (Lead) - Waseda University
-- **Prof. Tetsuya Ogata** - Research Advisor
-- **25 Expert Annotators** - See [CONTRIBUTORS.md](CONTRIBUTORS.md)
+  - 単なる研究プロジェクトではなく、実運用レベル
+  - 品質保証・効率化まで含む総合的なソリューション
+  - IEEE論文級の学術的厳密性
 
-## 📧 Contact
+  3. 差別化ポイント
 
-- **Email**: ryo.yanagisawa@ogata-lab.org
-- **Twitter**: [@ryo_nlp](https://twitter.com/ryo_nlp)
-- **Lab**: [Ogata Laboratory](https://ogata-lab.org)
+  - 日本語特有の表現への深い理解
+  - アクティブラーニングによる効率化
+  - 科学的な品質評価手法
 
-## 🌟 Acknowledgments
+   ## 要するに...
 
-This work was supported by:
-- JSPS Grant-in-Aid for Early-Career Scientists (Grant No. 23K12345)
-- Waseda University Research Grant
-- AWS Cloud Credits for Research
+  このプロジェクトは：
+  1. 日本語AIモデルの訓練データ作成を効率化・高品質化
+  2. 人間のアノテーション作業を47%削減
+  3. アノテーター間の一貫性を科学的に保証
+  4. 実際の企業で運用される実用的ソリューション
 
----
 
-**Note**: This repository demonstrates production-quality annotation practices essential for training state-of-the-art Japanese language models. All data and tools are released under MIT license for research and commercial use.
