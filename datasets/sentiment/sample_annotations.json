@@ -1,0 +1,452 @@
+{
+  "dataset_info": {
+    "name": "Japanese Sentiment Analysis Sample Dataset",
+    "version": "1.0",
+    "created_date": "2024-12-15",
+    "annotators": ["A001", "A002", "A003"],
+    "total_samples": 100,
+    "annotation_rounds": 3,
+    "inter_annotator_agreement": {
+      "cohens_kappa": 0.924,
+      "krippendorffs_alpha": 0.918,
+      "percentage_agreement": 0.945
+    }
+  },
+  "annotation_samples": [
+    {
+      "text_id": "sent_001",
+      "text": "このレストランの料理は本当に素晴らしかったです！特に寿司の鮮度が抜群で、シェフの技術の高さを感じました。また必ず訪れたいと思います。",
+      "domain": "restaurant_review",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "POS",
+          "confidence": 0.98,
+          "fine_grained": ["JOY", "TRUST"],
+          "aspects": {
+            "food": "POS",
+            "chef_skill": "POS",
+            "overall": "POS"
+          },
+          "reasoning": "Multiple positive expressions (素晴らしかった, 抜群, 高さ) with future visit intention"
+        },
+        "annotator_A002": {
+          "primary_label": "POS",
+          "confidence": 0.95,
+          "fine_grained": ["JOY", "ANTICIPATION"],
+          "aspects": {
+            "food": "POS",
+            "chef_skill": "POS",
+            "overall": "POS"
+          },
+          "reasoning": "Clear positive sentiment with explicit praise and return intention"
+        },
+        "annotator_A003": {
+          "primary_label": "POS",
+          "confidence": 0.97,
+          "fine_grained": ["JOY", "TRUST"],
+          "aspects": {
+            "food": "POS",
+            "chef_skill": "POS",
+            "overall": "POS"
+          },
+          "reasoning": "Consistent positive language throughout with specific compliments"
+        }
+      },
+      "gold_label": "POS",
+      "aggregated_confidence": 0.967,
+      "notes": "High agreement example - clear positive sentiment"
+    },
+    {
+      "text_id": "sent_002",
+      "text": "商品は無事に届きましたが、思っていたものとはちょっと違いました。悪くはないですが、この値段ならもっと良いものがあるかもしれませんね。",
+      "domain": "product_review",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "NEG",
+          "confidence": 0.72,
+          "fine_grained": ["DISAPPOINTMENT"],
+          "aspects": {
+            "delivery": "NEU",
+            "product_quality": "NEG",
+            "value": "NEG"
+          },
+          "reasoning": "Mild disappointment with indirect criticism about value"
+        },
+        "annotator_A002": {
+          "primary_label": "NEU",
+          "confidence": 0.68,
+          "fine_grained": [],
+          "aspects": {
+            "delivery": "POS",
+            "product_quality": "NEU",
+            "value": "NEG"
+          },
+          "reasoning": "Mixed sentiment - acknowledges delivery but questions value"
+        },
+        "annotator_A003": {
+          "primary_label": "NEG",
+          "confidence": 0.75,
+          "fine_grained": ["DISAPPOINTMENT"],
+          "aspects": {
+            "delivery": "NEU",
+            "product_quality": "NEG",
+            "value": "NEG"
+          },
+          "reasoning": "Overall negative due to unmet expectations and poor value perception"
+        }
+      },
+      "gold_label": "NEG",
+      "aggregated_confidence": 0.717,
+      "notes": "Disagreement case resolved through discussion - indirect Japanese criticism pattern"
+    },
+    {
+      "text_id": "sent_003",
+      "text": "普通のホテルでした。駅から近くて便利ですが、部屋は狭いです。ビジネス利用なら問題ないと思います。",
+      "domain": "hotel_review",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "NEU",
+          "confidence": 0.85,
+          "fine_grained": [],
+          "aspects": {
+            "location": "POS",
+            "room_size": "NEG",
+            "overall": "NEU"
+          },
+          "reasoning": "Balanced positive and negative aspects with neutral overall tone"
+        },
+        "annotator_A002": {
+          "primary_label": "NEU",
+          "confidence": 0.88,
+          "fine_grained": [],
+          "aspects": {
+            "location": "POS",
+            "room_size": "NEG",
+            "overall": "NEU"
+          },
+          "reasoning": "Clear neutral stance with 普通 as key indicator"
+        },
+        "annotator_A003": {
+          "primary_label": "NEU",
+          "confidence": 0.90,
+          "fine_grained": [],
+          "aspects": {
+            "location": "POS",
+            "room_size": "NEG",
+            "overall": "NEU"
+          },
+          "reasoning": "Factual description without strong emotional content"
+        }
+      },
+      "gold_label": "NEU",
+      "aggregated_confidence": 0.877,
+      "notes": "High agreement on neutral sentiment - typical Japanese balanced review"
+    },
+    {
+      "text_id": "sent_004",
+      "text": "最悪です。注文してから2週間も待たされた挙げ句、違う商品が届きました。カスタマーサービスの対応も酷く、二度と利用しません。",
+      "domain": "ecommerce_review",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "NEG",
+          "confidence": 0.99,
+          "fine_grained": ["ANGER", "DISGUST"],
+          "aspects": {
+            "delivery_time": "NEG",
+            "product_accuracy": "NEG",
+            "customer_service": "NEG",
+            "overall": "NEG"
+          },
+          "reasoning": "Explicit negative expressions (最悪, 酷く) with strong negative conclusion"
+        },
+        "annotator_A002": {
+          "primary_label": "NEG",
+          "confidence": 0.98,
+          "fine_grained": ["ANGER", "FRUSTRATION"],
+          "aspects": {
+            "delivery_time": "NEG",
+            "product_accuracy": "NEG",
+            "customer_service": "NEG",
+            "overall": "NEG"
+          },
+          "reasoning": "Multiple severe issues with definitive negative conclusion"
+        },
+        "annotator_A003": {
+          "primary_label": "NEG",
+          "confidence": 0.99,
+          "fine_grained": ["ANGER", "DISGUST"],
+          "aspects": {
+            "delivery_time": "NEG",
+            "product_accuracy": "NEG",
+            "customer_service": "NEG",
+            "overall": "NEG"
+          },
+          "reasoning": "Strong negative language throughout with boycott intention"
+        }
+      },
+      "gold_label": "NEG",
+      "aggregated_confidence": 0.987,
+      "notes": "Clear negative sentiment with high annotator agreement"
+    },
+    {
+      "text_id": "sent_005",
+      "text": "期待していたほどではありませんでしたが、まあまあでした。",
+      "domain": "general",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "NEG",
+          "confidence": 0.65,
+          "fine_grained": ["DISAPPOINTMENT"],
+          "aspects": {
+            "expectation_match": "NEG",
+            "overall": "NEG"
+          },
+          "reasoning": "Unmet expectations typically indicate negative sentiment in Japanese"
+        },
+        "annotator_A002": {
+          "primary_label": "NEU",
+          "confidence": 0.70,
+          "fine_grained": [],
+          "aspects": {
+            "expectation_match": "NEG",
+            "overall": "NEU"
+          },
+          "reasoning": "まあまあ suggests acceptable but not negative"
+        },
+        "annotator_A003": {
+          "primary_label": "NEG",
+          "confidence": 0.68,
+          "fine_grained": ["DISAPPOINTMENT"],
+          "aspects": {
+            "expectation_match": "NEG",
+            "overall": "NEG"
+          },
+          "reasoning": "Failed expectations outweigh the mild positive of まあまあ"
+        }
+      },
+      "gold_label": "NEG",
+      "aggregated_confidence": 0.677,
+      "notes": "Edge case - resolved as NEG after guideline consultation"
+    },
+    {
+      "text_id": "sent_006",
+      "text": "スタッフの笑顔が素敵で気持ちよく過ごせました😊",
+      "domain": "service_review",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "POS",
+          "confidence": 0.92,
+          "fine_grained": ["JOY", "SATISFACTION"],
+          "aspects": {
+            "staff": "POS",
+            "experience": "POS"
+          },
+          "reasoning": "Positive expressions reinforced by happy emoji"
+        },
+        "annotator_A002": {
+          "primary_label": "POS",
+          "confidence": 0.94,
+          "fine_grained": ["JOY"],
+          "aspects": {
+            "staff": "POS",
+            "experience": "POS"
+          },
+          "reasoning": "Clear positive sentiment with emoji confirmation"
+        },
+        "annotator_A003": {
+          "primary_label": "POS",
+          "confidence": 0.93,
+          "fine_grained": ["JOY", "SATISFACTION"],
+          "aspects": {
+            "staff": "POS",
+            "experience": "POS"
+          },
+          "reasoning": "素敵 and 気持ちよく indicate positive experience"
+        }
+      },
+      "gold_label": "POS",
+      "aggregated_confidence": 0.930,
+      "notes": "Emoji reinforces positive sentiment"
+    },
+    {
+      "text_id": "sent_007",
+      "text": "値段の割には...という感じです。",
+      "domain": "product_review",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "NEG",
+          "confidence": 0.78,
+          "fine_grained": ["DISAPPOINTMENT"],
+          "aspects": {
+            "value": "NEG"
+          },
+          "reasoning": "Ellipsis pattern in Japanese typically implies negative sentiment"
+        },
+        "annotator_A002": {
+          "primary_label": "NEG",
+          "confidence": 0.75,
+          "fine_grained": ["DISAPPOINTMENT"],
+          "aspects": {
+            "value": "NEG"
+          },
+          "reasoning": "Incomplete expression suggests dissatisfaction with value"
+        },
+        "annotator_A003": {
+          "primary_label": "NEG",
+          "confidence": 0.80,
+          "fine_grained": ["DISAPPOINTMENT"],
+          "aspects": {
+            "value": "NEG"
+          },
+          "reasoning": "という感じ with ellipsis is indirect criticism pattern"
+        }
+      },
+      "gold_label": "NEG",
+      "aggregated_confidence": 0.777,
+      "notes": "Japanese indirect expression pattern - ellipsis indicates unexpressed criticism"
+    },
+    {
+      "text_id": "sent_008",
+      "text": "対応が丁寧で安心しました。商品も説明通りでした。",
+      "domain": "customer_service",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "POS",
+          "confidence": 0.88,
+          "fine_grained": ["TRUST", "SATISFACTION"],
+          "aspects": {
+            "service": "POS",
+            "product_accuracy": "POS"
+          },
+          "reasoning": "安心 indicates positive emotional response"
+        },
+        "annotator_A002": {
+          "primary_label": "POS",
+          "confidence": 0.85,
+          "fine_grained": ["TRUST"],
+          "aspects": {
+            "service": "POS",
+            "product_accuracy": "NEU"
+          },
+          "reasoning": "Polite service created positive experience"
+        },
+        "annotator_A003": {
+          "primary_label": "POS",
+          "confidence": 0.87,
+          "fine_grained": ["TRUST", "SATISFACTION"],
+          "aspects": {
+            "service": "POS",
+            "product_accuracy": "POS"
+          },
+          "reasoning": "Both aspects positive - met expectations"
+        }
+      },
+      "gold_label": "POS",
+      "aggregated_confidence": 0.867,
+      "notes": "Trust and satisfaction from good service"
+    },
+    {
+      "text_id": "sent_009",
+      "text": "特に可もなく不可もなくといったところでしょうか。",
+      "domain": "general",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "NEU",
+          "confidence": 0.95,
+          "fine_grained": [],
+          "aspects": {
+            "overall": "NEU"
+          },
+          "reasoning": "Classic Japanese expression for neutral sentiment"
+        },
+        "annotator_A002": {
+          "primary_label": "NEU",
+          "confidence": 0.97,
+          "fine_grained": [],
+          "aspects": {
+            "overall": "NEU"
+          },
+          "reasoning": "Explicit neutral expression - neither good nor bad"
+        },
+        "annotator_A003": {
+          "primary_label": "NEU",
+          "confidence": 0.96,
+          "fine_grained": [],
+          "aspects": {
+            "overall": "NEU"
+          },
+          "reasoning": "Standard neutral idiom in Japanese"
+        }
+      },
+      "gold_label": "NEU",
+      "aggregated_confidence": 0.960,
+      "notes": "Textbook neutral expression with high agreement"
+    },
+    {
+      "text_id": "sent_010",
+      "text": "素晴らしいサービスでした（笑）一時間も待たされて、オーダーも間違えられて、本当に最高の体験でしたね。",
+      "domain": "restaurant_review",
+      "annotations": {
+        "annotator_A001": {
+          "primary_label": "NEG",
+          "confidence": 0.94,
+          "fine_grained": ["ANGER", "SARCASM"],
+          "aspects": {
+            "service": "NEG",
+            "wait_time": "NEG",
+            "order_accuracy": "NEG"
+          },
+          "reasoning": "Clear sarcasm - positive words contradict negative experiences"
+        },
+        "annotator_A002": {
+          "primary_label": "NEG",
+          "confidence": 0.92,
+          "fine_grained": ["FRUSTRATION", "SARCASM"],
+          "aspects": {
+            "service": "NEG",
+            "wait_time": "NEG",
+            "order_accuracy": "NEG"
+          },
+          "reasoning": "(笑) with negative experiences indicates sarcasm"
+        },
+        "annotator_A003": {
+          "primary_label": "NEG",
+          "confidence": 0.95,
+          "fine_grained": ["ANGER", "SARCASM"],
+          "aspects": {
+            "service": "NEG",
+            "wait_time": "NEG",
+            "order_accuracy": "NEG"
+          },
+          "reasoning": "Ironic use of positive language to express strong negativity"
+        }
+      },
+      "gold_label": "NEG",
+      "aggregated_confidence": 0.937,
+      "notes": "Sarcasm detection - positive form with negative content"
+    }
+  ],
+  "statistics": {
+    "label_distribution": {
+      "POS": 0.40,
+      "NEG": 0.35,
+      "NEU": 0.25
+    },
+    "average_confidence": 0.857,
+    "annotation_time_per_sample_seconds": {
+      "mean": 18.5,
+      "std": 6.2
+    },
+    "disagreement_rate": 0.12,
+    "fine_grained_label_usage": {
+      "JOY": 0.28,
+      "TRUST": 0.15,
+      "ANGER": 0.12,
+      "DISAPPOINTMENT": 0.18,
+      "SATISFACTION": 0.10,
+      "FRUSTRATION": 0.08,
+      "SARCASM": 0.05,
+      "DISGUST": 0.04
+    }
+  }
+}
