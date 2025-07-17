@@ -48,6 +48,38 @@
   - そのサンプルだけを人間がラベリング
   - 結果: 47%の時間削減（通常の半分の労力で同等の精度）
 
+  ## インストールと実行方法
+
+  ### Using uv (Recommended)
+  ```bash
+  # Clone repository
+  git clone https://github.com/pianomachine/japanese-nlp-annotation-framework
+  cd japanese-nlp-annotation-framework
+
+  # Install with uv
+  uv sync
+
+  # Run interactive demo
+  uv run python demo_visualization.py
+
+  # Run quality analysis
+  uv run python simple_quality_check.py
+
+  # Run detailed sample analysis
+  uv run python show_samples.py
+  ```
+
+  ### Using pip
+  ```bash
+  # Install dependencies
+  pip install -e .
+
+  # Run quality checks
+  jmmaf-evaluate --dataset sentiment
+  jmmaf-benchmark --models bert,roberta
+  jmmaf-demo
+  ```
+
   3. 品質評価メトリクス
 
   # quality_metrics.py の主要機能
